@@ -27,6 +27,7 @@ public class Canvas {
     private Raster raster;
     private JFrame frame;
     private JPanel panel;
+    private CanvasMouse canvasMouse;
     //private BufferedImage img;
 
     public Canvas(int width, int height) {
@@ -56,6 +57,7 @@ public class Canvas {
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
+        canvasMouse = new CanvasMouse(panel.getWidth(),panel.getHeight());
     }
 
     public void clear() {
