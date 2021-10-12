@@ -1,3 +1,8 @@
+import rasterize.LineRasterizer;
+import rasterize.LineRasterizerTrivial;
+import rester.Raster;
+import rester.RasterBufferdImage;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,9 +23,11 @@ import javax.swing.WindowConstants;
 
 public class Canvas {
 
+    private LineRasterizer lineRasterizer;
+    private Raster raster;
     private JFrame frame;
     private JPanel panel;
-    private BufferedImage img;
+    //private BufferedImage img;
 
     public Canvas(int width, int height) {
         frame = new JFrame();
@@ -30,7 +37,9 @@ public class Canvas {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        raster = new RasterBufferdImage(800,600);
+        lineRasterizer = new LineRasterizerTrivial(raster);
+        //img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         panel = new JPanel() {
             private static final long serialVersionUID = 1L;
@@ -50,76 +59,22 @@ public class Canvas {
     }
 
     public void clear() {
-        Graphics gr = img.getGraphics();
-        gr.setColor(new Color(0x2f2f2f));
-        gr.fillRect(0, 0, img.getWidth(), img.getHeight());
+        raster.clear();
     }
 
     public void present(Graphics graphics) {
-        graphics.drawImage(img, 0, 0, null);
+        ((RasterBufferdImage)raster).present(graphics);
     }
 
     public void draw() {
         clear();
-        for (int i = 0; i <= 90; i++) {
-            img.setRGB(10 + i, 10, 0xffff00);
-        }
-    }
-
-    // 10,10 - 100,50
-    public void drawLine(int x1, int y1, int x2, int y2) {
-        float xgap = x2 - x1;
-        float ygap = y2 - y1;
-        //oboje kladny
-        if (x2>=x1&&y2>=y1){
-            if (xgap > ygap) {
-                float ystep = ygap / xgap;
-                float x = x1;
-                float y = y1;
-                while (x != x2) {
-                    img.setRGB((int) x, (int) y, 0xffff00);
-                    x++;
-                    y += ystep;
-                }
-            } else {
-                float xstep = xgap / ygap;
-                float x = x1;
-                float y = y1;
-                while (y != y2) {
-                    img.setRGB((int) x, (int) y, 0xffff00);
-                    y++;
-                    x += xstep;
-                }
-            }
-        }
-        //oboje zaporny
-        else if(x2<=x1&&y2<=y1){
-            if (xgap > ygap) {
-                float ystep = ygap / xgap;
-                float x = x1;
-                float y = y1;
-                while (x != x2) {
-                    img.setRGB((int) x, (int) y, 0xffff00);
-                    x--;
-                    y -= ystep;
-                }
-            } else {
-                float xstep = xgap / ygap;
-                float x = x1;
-                float y = y1;
-                while (y != y2) {
-                    img.setRGB((int) x, (int) y, 0xffff00);
-                    y--;
-                    x -= xstep;
-                }
-            }
-        }
+        lineRasterizer.rasterize(10,10,100,50);
+        lineRasterizer.rasterize(10,10,100,250);
     }
 
 
     public void start() {
-        //draw();
-        drawLine(200, 200, 300, 100);
+        draw();
         panel.repaint();
     }
 
