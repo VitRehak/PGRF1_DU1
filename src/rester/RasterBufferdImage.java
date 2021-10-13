@@ -5,10 +5,10 @@ import java.awt.image.BufferedImage;
 
 public class RasterBufferdImage implements Raster {
 
-    private BufferedImage img;
+    private final BufferedImage img;
 
-    public RasterBufferdImage(int width,int height) {
-        img = new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+    public RasterBufferdImage(int width, int height) {
+        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     }
 
     public RasterBufferdImage(BufferedImage img) {
@@ -19,13 +19,14 @@ public class RasterBufferdImage implements Raster {
         return img;
     }
 
-    public void present(Graphics graphics){
+    public void present(Graphics graphics) {
         graphics.drawImage(img, 0, 0, null);
     }
 
     @Override
-    public void setPixel(int x, int y, int color) {
-        img.setRGB(x,y,color);
+    public void setPixel(int x, int y, Color color) {
+        if (x < img.getWidth() && x > 0 && y < img.getHeight() && y > 0)
+            img.setRGB(x, y, color.hashCode());
     }
 
     @Override

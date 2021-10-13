@@ -1,7 +1,7 @@
 
 import model.Line;
 import rasterize.LineRasterizer;
-import rasterize.LineRasterizerBufferedImage;
+import rasterize.LineRasterizerTrivial;
 import rester.RasterBufferdImage;
 
 import java.awt.*;
@@ -39,7 +39,7 @@ public class CanvasMouse {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         raster = new RasterBufferdImage(width, height);
-        lineRasterizer = new LineRasterizerBufferedImage(raster);
+        lineRasterizer = new LineRasterizerTrivial(raster);
         panel = new JPanel() {
             @Serial
             private static final long serialVersionUID = 1L;
@@ -64,23 +64,24 @@ public class CanvasMouse {
                     y1 = e.getY();
                 }
                 if (e.getButton() == MouseEvent.BUTTON2)
-                    raster.setPixel(e.getX(), e.getY(), 0xff00ff);
+                    raster.setPixel(e.getX(), e.getY(), Color.RED);
                 if (e.getButton() == MouseEvent.BUTTON3)
-                    raster.setPixel(e.getX(), e.getY(), 0xffffff);
+                    raster.setPixel(e.getX(), e.getY(), Color.RED);
                 panel.repaint();
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    lines.add(new Line(new Point(x1, y1), new Point(e.getX(), e.getY())));
+                    lines.add(new Line(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
                 }
+                draw(e);
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
                 clear();
-                lineRasterizer.rasterize(x1, y1, e.getX(), e.getY());
+                lineRasterizer.rasterize(x1, y1, e.getX(), e.getY(), Color.RED);
                 panel.repaint();
             }
         });
@@ -111,8 +112,8 @@ public class CanvasMouse {
 
     public void draw(MouseEvent e) {
         clear();
-        lineRasterizer.rasterize(x1, y1, e.getX(), e.getY());
-        lines.forEach(l -> lineRasterizer.rasterize(l.getSource().x, l.getSource().y, l.getDestination().x, l.getDestination().y));
+        lineRasterizer.rasterize(x1, y1, e.getX(), e.getY(), Color.RED);
+        lines.forEach(l -> lineRasterizer.rasterize(l.getSource().x, l.getSource().y, l.getDestination().x, l.getDestination().y, l.getColor()));
         panel.repaint();
     }
 }
