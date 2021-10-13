@@ -72,6 +72,10 @@ public class Canvas {
         clear();
         lineRasterizer.rasterize(10, 10, 100, 50);
         lineRasterizer.rasterize(10, 10, 100, 250);
+        lineRasterizer.rasterize(10, 10, 100, 50);
+        lineRasterizer.rasterize(10, 10, 100, 250);
+        lineRasterizer.rasterize(10, 10, 100, 50);
+        lineRasterizer.rasterize(10, 10, 100, 250);
     }
 
 
