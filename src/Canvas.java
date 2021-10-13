@@ -77,6 +77,7 @@ public class Canvas {
 
     public void start() {
         draw();
+        draw();
         panel.repaint();
     }
 
