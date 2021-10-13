@@ -102,7 +102,6 @@ public class CanvasMouse {
 
     public void start() {
         clear();
-        clear();
         panel.repaint();
     }
 
