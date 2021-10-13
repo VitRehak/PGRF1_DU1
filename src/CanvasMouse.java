@@ -1,7 +1,9 @@
 
 import model.Line;
+import model.Polygon;
 import rasterize.LineRasterizer;
 import rasterize.LineRasterizerTrivial;
+import rasterize.PolygonRasterizer;
 import rester.RasterBufferdImage;
 
 import java.awt.*;
@@ -27,9 +29,13 @@ public class CanvasMouse {
     private final RasterBufferdImage raster;
     private final LineRasterizer lineRasterizer;
     private final ModeChanger modeChanger;
+    private final PolygonRasterizer polygonRasterizer;
 
     private int x1, y1;
+    private Polygon polygon;
+
     private final List<Line> lines = new ArrayList<>();
+    private final List<Polygon>polygons = new ArrayList<>();
 
     public CanvasMouse(int width, int height) {
         JFrame frame = new JFrame();
@@ -58,6 +64,7 @@ public class CanvasMouse {
 
         raster = new RasterBufferdImage(width, height);
         lineRasterizer = new LineRasterizerTrivial(raster);
+        polygonRasterizer = new PolygonRasterizer(raster);
         modeChanger = new ModeChanger(panel);
 
         /*panel.addComponentListener(new ComponentAdapter() {
@@ -84,26 +91,38 @@ public class CanvasMouse {
         panel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
+
+                //line
+                /*if (e.getButton() == MouseEvent.BUTTON1) {
                     x1 = e.getX();
                     y1 = e.getY();
-                }
+                }*/
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
+                //polygon
+                polygon.addPoint(new Point(e.getX(),e.getY()));
+
+
+                //line
+                /*if (e.getButton() == MouseEvent.BUTTON1) {
                     lines.add(new Line(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
                 }
-                draw();
+                draw();*/
             }
         });
         panel.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                clear();
+                //polygon
+                polygonRasterizer.rasterize(polygon);
+
+                //line
+
+                /*clear();
                 lineRasterizer.rasterize(x1, y1, e.getX(), e.getY(), Color.RED);
-                draw();
+                draw();*/
             }
         });
     }
