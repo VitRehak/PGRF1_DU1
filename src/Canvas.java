@@ -38,7 +38,7 @@ public class Canvas {
         frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        raster = new RasterBufferdImage(800,600);
+        raster = new RasterBufferdImage(800, 600);
         lineRasterizer = new LineRasterizerTrivial(raster);
         //img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
@@ -57,7 +57,7 @@ public class Canvas {
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();
         frame.setVisible(true);
-        canvasMouse = new CanvasMouse(panel.getWidth(),panel.getHeight());
+        canvasMouse = new CanvasMouse(panel.getWidth(), panel.getHeight());
     }
 
     public void clear() {
@@ -65,13 +65,17 @@ public class Canvas {
     }
 
     public void present(Graphics graphics) {
-        ((RasterBufferdImage)raster).present(graphics);
+        ((RasterBufferdImage) raster).present(graphics);
     }
 
     public void draw() {
         clear();
-        lineRasterizer.rasterize(10,10,100,50);
-        lineRasterizer.rasterize(10,10,100,250);
+        lineRasterizer.rasterize(10, 10, 100, 50);
+        lineRasterizer.rasterize(10, 10, 100, 250);
+        lineRasterizer.rasterize(10, 10, 100, 50);
+        lineRasterizer.rasterize(10, 10, 100, 250);
+        lineRasterizer.rasterize(10, 10, 100, 50);
+        lineRasterizer.rasterize(10, 10, 100, 250);
     }
 
 
