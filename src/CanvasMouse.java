@@ -31,11 +31,12 @@ public class CanvasMouse {
     private final ModeChanger modeChanger;
     private final PolygonRasterizer polygonRasterizer;
 
-    private int x1, y1;
+    private int x1 = -1;
+    private int y1 = -1;
     private Polygon polygon;
 
     private final List<Line> lines = new ArrayList<>();
-    private final List<Polygon>polygons = new ArrayList<>();
+    private final List<Polygon> polygons = new ArrayList<>();
 
     public CanvasMouse(int width, int height) {
         JFrame frame = new JFrame();
@@ -64,7 +65,7 @@ public class CanvasMouse {
 
         raster = new RasterBufferdImage(width, height);
         lineRasterizer = new LineRasterizerTrivial(raster);
-        polygonRasterizer = new PolygonRasterizer(raster);
+        polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer);
         modeChanger = new ModeChanger(panel);
 
         /*panel.addComponentListener(new ComponentAdapter() {
@@ -80,51 +81,73 @@ public class CanvasMouse {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_C) {
-                    lines.clear();
-                    x1 = 0;
-                    y1 = 0;
-                    draw();
-                    clear();
+                    clearValues();
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    creatPolygon();
                 }
             }
         });
         panel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-                //line
-                /*if (e.getButton() == MouseEvent.BUTTON1) {
-                    x1 = e.getX();
-                    y1 = e.getY();
-                }*/
-            }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                //polygon
-                polygon.addPoint(new Point(e.getX(),e.getY()));
-
+                clear();
 
                 //line
-                /*if (e.getButton() == MouseEvent.BUTTON1) {
-                    lines.add(new Line(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
+                if (modeChanger.getMode() == 1) {
+                    if (x1 == -1 && y1 == -1) {
+                        x1 = e.getX();
+                        y1 = e.getY();
+                    } else {
+                        lines.add(new Line(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
+                        x1 = -1;
+                        y1 = -1;
+                    }
                 }
-                draw();*/
+                //polygon
+                else if (modeChanger.getMode() == 2) {
+                    if (polygon == null)
+                        polygon = new Polygon(Color.YELLOW);
+                    polygon.addPoint(new Point(e.getX(), e.getY()));
+                    polygonAssistantLines(e);
+                }
+
+                draw();
             }
         });
         panel.addMouseMotionListener(new MouseAdapter() {
             @Override
-            public void mouseDragged(MouseEvent e) {
-                //polygon
-                polygonRasterizer.rasterize(polygon);
+            public void mouseMoved(MouseEvent e) {
+                clear();
 
                 //line
+                if (modeChanger.getMode() == 1)
+                    lineAssistantLines(e);
+                    //polygon
+                else if (modeChanger.getMode() == 2)
+                    polygonAssistantLines(e);
 
-                /*clear();
-                lineRasterizer.rasterize(x1, y1, e.getX(), e.getY(), Color.RED);
-                draw();*/
+                draw();
             }
         });
+    }
+
+    public void creatPolygon() {
+        clear();
+        polygons.add(polygon);
+        polygon = null;
+        polygonRasterizer.rasterize(polygons);
+        draw();
+    }
+
+    public void clearValues() {
+        lines.clear();
+        x1 = -1;
+        y1 = -1;
+        polygon = null;
+        polygons.clear();
+        clear();
+        panel.repaint();
     }
 
     public void clear() {
@@ -146,6 +169,33 @@ public class CanvasMouse {
 
     public void draw() {
         lines.forEach(l -> lineRasterizer.rasterize(l.getSource().x, l.getSource().y, l.getDestination().x, l.getDestination().y, l.getColor()));
+        if (polygons.size() > 0)
+            polygonRasterizer.rasterize(polygons);
+        if (polygon != null)
+            polygonRasterizer.rasterize(polygon);
         panel.repaint();
+    }
+
+    public void polygonAssistantLines(MouseEvent e) {
+        if (polygon != null)
+            if (polygon.getPoints().size() >= 2) {
+                lineRasterizer.rasterize(
+                        polygon.getPoints().get(0).x,
+                        polygon.getPoints().get(0).y,
+                        e.getX(),
+                        e.getY(),
+                        Color.RED);
+                lineRasterizer.rasterize(
+                        e.getX(),
+                        e.getY(),
+                        polygon.getPoints().get(polygon.getPoints().size() - 1).x,
+                        polygon.getPoints().get(polygon.getPoints().size() - 1).y,
+                        Color.RED);
+            }
+    }
+
+    public void lineAssistantLines(MouseEvent e) {
+        if (x1 >= 0 && y1 >= 0)
+            lineRasterizer.rasterize(x1, y1, e.getX(), e.getY(), Color.RED);
     }
 }

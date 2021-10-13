@@ -9,9 +9,10 @@ public class Polygon {
     private final Color color;
     private final List<Point> points = new ArrayList<>();
 
-    public void addPoint(Point p){
+    public void addPoint(Point p) {
         points.add(p);
     }
+
     public Polygon(Color color) {
         this.color = color;
     }

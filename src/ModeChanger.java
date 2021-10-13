@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 public class ModeChanger {
     private final JPanel panel;
-    private int mode;
+    private int mode = 1;
 
     public ModeChanger(JPanel panel) {
         this.panel = panel;
