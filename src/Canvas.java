@@ -28,7 +28,6 @@ public class Canvas {
     private JFrame frame;
     private JPanel panel;
     private CanvasMouse canvasMouse;
-    //private BufferedImage img;
 
     public Canvas(int width, int height) {
         frame = new JFrame();
