@@ -4,11 +4,11 @@ import model.Polygon;
 import rasterize.LineRasterizer;
 import rasterize.LineRasterizerTrivial;
 import rasterize.PolygonRasterizer;
+import rasterize.RightAngleTriangleRasterizer;
 import rester.RasterBufferdImage;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +30,7 @@ public class CanvasMouse {
     private final LineRasterizer lineRasterizer;
     private final ModeChanger modeChanger;
     private final PolygonRasterizer polygonRasterizer;
+    private final RightAngleTriangleRasterizer rightAngleTriangleRasterizer;
 
     private int x1 = -1;
     private int y1 = -1;
@@ -47,7 +48,6 @@ public class CanvasMouse {
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         panel = new JPanel() {
-            @Serial
             private static final long serialVersionUID = 1L;
 
             @Override
@@ -67,6 +67,7 @@ public class CanvasMouse {
         lineRasterizer = new LineRasterizerTrivial(raster);
         polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer);
         modeChanger = new ModeChanger(panel);
+        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster);
 
         /*panel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -111,7 +112,17 @@ public class CanvasMouse {
                     polygon.addPoint(new Point(e.getX(), e.getY()));
                     polygonAssistantLines(e);
                 }
-
+                //rightAngleTriangle
+                else if (modeChanger.getMode() == 3) {
+                    if (x1 == -1 && y1 == -1) {
+                        x1 = e.getX();
+                        y1 = e.getY();
+                    } else {
+                        polygons.add(rightAngleTriangleRasterizer.createRightAngleTriangle(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
+                        x1 = -1;
+                        y1 = -1;
+                    }
+                }
                 draw();
             }
         });
@@ -126,7 +137,10 @@ public class CanvasMouse {
                     //polygon
                 else if (modeChanger.getMode() == 2)
                     polygonAssistantLines(e);
+                    //rightAngleTriangle
+                else if (modeChanger.getMode() == 3) {
 
+                }
                 draw();
             }
         });
