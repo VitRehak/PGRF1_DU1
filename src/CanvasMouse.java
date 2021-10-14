@@ -67,7 +67,7 @@ public class CanvasMouse {
         lineRasterizer = new LineRasterizerTrivial(raster);
         polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer);
         modeChanger = new ModeChanger(panel);
-        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster);
+        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster,lineRasterizer);
 
         /*panel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -110,7 +110,7 @@ public class CanvasMouse {
                     if (polygon == null)
                         polygon = new Polygon(Color.YELLOW);
                     polygon.addPoint(new Point(e.getX(), e.getY()));
-                    polygonAssistantLines(e);
+                    polygonRasterizer.assistantLines(e,polygon);
                 }
                 //rightAngleTriangle
                 else if (modeChanger.getMode() == 3) {
@@ -136,10 +136,10 @@ public class CanvasMouse {
                     lineAssistantLines(e);
                     //polygon
                 else if (modeChanger.getMode() == 2)
-                    polygonAssistantLines(e);
+                    polygonRasterizer.assistantLines(e,polygon);
                     //rightAngleTriangle
                 else if (modeChanger.getMode() == 3) {
-
+                    rightAngleTriangleRasterizer.assistanLines(e,new Point(x1,y1),Color.RED);
                 }
                 draw();
             }
@@ -188,24 +188,6 @@ public class CanvasMouse {
         if (polygon != null)
             polygonRasterizer.rasterize(polygon);
         panel.repaint();
-    }
-
-    public void polygonAssistantLines(MouseEvent e) {
-        if (polygon != null)
-            if (polygon.getPoints().size() >= 2) {
-                lineRasterizer.rasterize(
-                        polygon.getPoints().get(0).x,
-                        polygon.getPoints().get(0).y,
-                        e.getX(),
-                        e.getY(),
-                        Color.RED);
-                lineRasterizer.rasterize(
-                        e.getX(),
-                        e.getY(),
-                        polygon.getPoints().get(polygon.getPoints().size() - 1).x,
-                        polygon.getPoints().get(polygon.getPoints().size() - 1).y,
-                        Color.RED);
-            }
     }
 
     public void lineAssistantLines(MouseEvent e) {

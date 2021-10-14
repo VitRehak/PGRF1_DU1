@@ -3,6 +3,8 @@ package rasterize;
 import model.Polygon;
 import rester.Raster;
 
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class PolygonRasterizer extends LineRasterizer {
@@ -42,5 +44,23 @@ public class PolygonRasterizer extends LineRasterizer {
                     p.getPoints().get(p.getPoints().size()-1).y,
                     p.getColor());
         });
+
+    }
+    public void assistantLines(MouseEvent e, Polygon polygon) {
+        if (polygon != null)
+            if (polygon.getPoints().size() >= 2) {
+                lineRasterizer.rasterize(
+                        polygon.getPoints().get(0).x,
+                        polygon.getPoints().get(0).y,
+                        e.getX(),
+                        e.getY(),
+                        Color.RED);
+                lineRasterizer.rasterize(
+                        e.getX(),
+                        e.getY(),
+                        polygon.getPoints().get(polygon.getPoints().size() - 1).x,
+                        polygon.getPoints().get(polygon.getPoints().size() - 1).y,
+                        Color.RED);
+            }
     }
 }
