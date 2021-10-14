@@ -9,7 +9,8 @@ import java.awt.event.MouseEvent;
 public class RightAngleTriangleRasterizer extends LineRasterizer {
 
     private final LineRasterizer lineRasterizer;
-    public RightAngleTriangleRasterizer(Raster raster,LineRasterizer lineRasterizer) {
+
+    public RightAngleTriangleRasterizer(Raster raster, LineRasterizer lineRasterizer) {
         super(raster);
         this.lineRasterizer = lineRasterizer;
     }
@@ -34,22 +35,26 @@ public class RightAngleTriangleRasterizer extends LineRasterizer {
 
         return polygon;
     }
-    public void assistanLines(MouseEvent e, Point source, Color color){
-        Point destination = new Point(e.getX(),e.getY());
+
+    public void assistanLines(MouseEvent e, Point source, Color color) {
+        Point destination = new Point(e.getX(), e.getY());
         if (source.y < destination.y) {
             Point tmp = new Point(source.x, source.y);
             source = new Point(destination.x, destination.y);
             destination = new Point(tmp.x, tmp.y);
         }
+
         int x = source.x;
-        if (source.x < destination.x)
+        if (x < destination.x)
             while (destination.x > x)
                 x++;
-        if (source.x > destination.x)
+        if (x > destination.x)
             while (destination.x < x)
                 x--;
-            lineRasterizer.rasterize(source.x, source.y, e.getX(),e.getY(),color);
-            lineRasterizer.rasterize(destination.x, e.getY(), e.getX(),e.getY(),color);
+
+        lineRasterizer.rasterize(source.x, source.y, destination.x, destination.y, color);
+        lineRasterizer.rasterize(destination.x, destination.y, x, source.y, color);
+        lineRasterizer.rasterize(source.x, source.y, x, source.y, color);
     }
 }
 

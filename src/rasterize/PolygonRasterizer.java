@@ -40,15 +40,18 @@ public class PolygonRasterizer extends LineRasterizer {
             lineRasterizer.rasterize(
                     p.getPoints().get(0).x,
                     p.getPoints().get(0).y,
-                    p.getPoints().get(p.getPoints().size()-1).x,
-                    p.getPoints().get(p.getPoints().size()-1).y,
+                    p.getPoints().get(p.getPoints().size() - 1).x,
+                    p.getPoints().get(p.getPoints().size() - 1).y,
                     p.getColor());
         });
 
     }
+
     public void assistantLines(MouseEvent e, Polygon polygon) {
         if (polygon != null)
-            if (polygon.getPoints().size() >= 2) {
+            if (polygon.getPoints().size() == 1) {
+                lineRasterizer.rasterize(polygon.getPoints().get(0).x, polygon.getPoints().get(0).y, e.getX(), e.getY(), Color.RED);
+            } else if (polygon.getPoints().size() >= 2) {
                 lineRasterizer.rasterize(
                         polygon.getPoints().get(0).x,
                         polygon.getPoints().get(0).y,

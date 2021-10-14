@@ -69,8 +69,8 @@ public class Canvas {
 
     public void draw() {
         clear();
-        lineRasterizer.rasterize(10, 10, 100, 50,Color.YELLOW);
-        lineRasterizer.rasterize(10, 10, 100, 250,Color.YELLOW);
+        lineRasterizer.rasterize(10, 10, 100, 50, Color.YELLOW);
+        lineRasterizer.rasterize(10, 10, 100, 250, Color.YELLOW);
     }
 
 

@@ -67,7 +67,7 @@ public class CanvasMouse {
         lineRasterizer = new LineRasterizerTrivial(raster);
         polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer);
         modeChanger = new ModeChanger(panel);
-        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster,lineRasterizer);
+        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster, lineRasterizer);
 
         /*panel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -110,7 +110,7 @@ public class CanvasMouse {
                     if (polygon == null)
                         polygon = new Polygon(Color.YELLOW);
                     polygon.addPoint(new Point(e.getX(), e.getY()));
-                    polygonRasterizer.assistantLines(e,polygon);
+                    polygonRasterizer.assistantLines(e, polygon);
                 }
                 //rightAngleTriangle
                 else if (modeChanger.getMode() == 3) {
@@ -133,13 +133,15 @@ public class CanvasMouse {
 
                 //line
                 if (modeChanger.getMode() == 1)
-                    lineAssistantLines(e);
-                    //polygon
-                else if (modeChanger.getMode() == 2)
-                    polygonRasterizer.assistantLines(e,polygon);
-                    //rightAngleTriangle
-                else if (modeChanger.getMode() == 3) {
-                    rightAngleTriangleRasterizer.assistanLines(e,new Point(x1,y1),Color.RED);
+                    if (x1 >= 0 && y1 >= 0)
+                        lineRasterizer.lineAssistant(new Point(x1, y1), e);
+                //polygon
+                if (modeChanger.getMode() == 2)
+                    polygonRasterizer.assistantLines(e, polygon);
+                //rightAngleTriangle
+                if (modeChanger.getMode() == 3) {
+                    if (x1 >= 0 && y1 >= 0)
+                        rightAngleTriangleRasterizer.assistanLines(e, new Point(x1, y1), Color.RED);
                 }
                 draw();
             }
@@ -190,8 +192,4 @@ public class CanvasMouse {
         panel.repaint();
     }
 
-    public void lineAssistantLines(MouseEvent e) {
-        if (x1 >= 0 && y1 >= 0)
-            lineRasterizer.rasterize(x1, y1, e.getX(), e.getY(), Color.RED);
-    }
 }
