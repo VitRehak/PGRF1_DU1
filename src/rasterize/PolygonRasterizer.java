@@ -10,9 +10,11 @@ import java.util.List;
 public class PolygonRasterizer{
 
     private final LineRasterizer lineRasterizer;
+    private final LineRasterizer dottedLineRasterizer;
     private final Raster raster;
 
-    public PolygonRasterizer(Raster raster, LineRasterizer lineRasterizer) {
+    public PolygonRasterizer(Raster raster, LineRasterizer lineRasterizer,LineRasterizer dottedLineRasterizer) {
+        this.dottedLineRasterizer = dottedLineRasterizer;
         this.raster=raster;
         this.lineRasterizer = lineRasterizer;
     }
@@ -51,15 +53,15 @@ public class PolygonRasterizer{
     public void assistantLines(MouseEvent e, Polygon polygon) {
         if (polygon != null)
             if (polygon.getPoints().size() == 1) {
-                lineRasterizer.rasterize(polygon.getPoints().get(0).x, polygon.getPoints().get(0).y, e.getX(), e.getY(), Color.RED);
+                dottedLineRasterizer.rasterize(polygon.getPoints().get(0).x, polygon.getPoints().get(0).y, e.getX(), e.getY(), Color.RED);
             } else if (polygon.getPoints().size() >= 2) {
-                lineRasterizer.rasterize(
+                dottedLineRasterizer.rasterize(
                         polygon.getPoints().get(0).x,
                         polygon.getPoints().get(0).y,
                         e.getX(),
                         e.getY(),
                         Color.RED);
-                lineRasterizer.rasterize(
+                dottedLineRasterizer.rasterize(
                         e.getX(),
                         e.getY(),
                         polygon.getPoints().get(polygon.getPoints().size() - 1).x,

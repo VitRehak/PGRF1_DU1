@@ -46,7 +46,4 @@ public class LineRasterizerTrivial extends LineRasterizer {
             }
         }
     }
-    public void lineAssistant(Point source, MouseEvent e) {
-        rasterize(source.x, source.y, e.getX(), e.getY(), Color.RED);
-    }
 }

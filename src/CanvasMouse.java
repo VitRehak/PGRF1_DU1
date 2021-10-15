@@ -65,9 +65,9 @@ public class CanvasMouse {
         lineRasterizer = new LineRasterizerTrivial(raster);
         dottedLineRasterizer = new DottedLineRasterizer(raster);
 
-        polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer);
+        polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer, dottedLineRasterizer);
         modeChanger = new ModeChanger(panel);
-        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster, lineRasterizer);
+        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster, dottedLineRasterizer);
 
         /*panel.addComponentListener(new ComponentAdapter() {
             @Override
@@ -134,7 +134,7 @@ public class CanvasMouse {
                 //line
                 if (modeChanger.getMode() == 1)
                     if (x1 >= 0 && y1 >= 0)
-                        ((LineRasterizerTrivial) lineRasterizer).lineAssistant(new Point(x1, y1), e);
+                        ((DottedLineRasterizer) dottedLineRasterizer).lineAssistant(new Point(x1, y1), e, Color.RED);
                 //polygon
                 if (modeChanger.getMode() == 2)
                     polygonRasterizer.assistantLines(e, polygon);
@@ -183,7 +183,7 @@ public class CanvasMouse {
     }
 
     public void draw() {
-        lines.forEach(l -> dottedLineRasterizer.rasterize(l.getSource().x, l.getSource().y, l.getDestination().x, l.getDestination().y, l.getColor()));
+        lines.forEach(l -> lineRasterizer.rasterize(l.getSource().x, l.getSource().y, l.getDestination().x, l.getDestination().y, l.getColor()));
         if (polygons.size() > 0)
             polygonRasterizer.rasterize(polygons);
         if (polygon != null)
