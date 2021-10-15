@@ -11,7 +11,7 @@ _ 2:  Koncové body zadávejte interaktivně pomocí tzv. pružné čáry. Stisk
 
 _ 3:  K implementaci použijte třídy Point, Line a LineRasterizer. Třídy případně upravte nebo doplňte o potřebné metody. Návrhy tříd naleznete v modulu task1 (viz Oliva-obsah-ukázky a návody).
 
-* 4:  Vytvořte třídu FilledLineRasterizer dědící z abstraktní třídy LineRasterizer a správně implementující libovolný algoritmus pro rasterizaci úsečky. Do komentáře zapište, o jaký algoritmus se jedná, jeho výhody a nevýhody, případně jiná jeho specifika.
+_ 4:  Vytvořte třídu FilledLineRasterizer dědící z abstraktní třídy LineRasterizer a správně implementující libovolný algoritmus pro rasterizaci úsečky. Do komentáře zapište, o jaký algoritmus se jedná, jeho výhody a nevýhody, případně jiná jeho specifika.
 
 _ 5:  Prozkoumejte třídy Canvas, CanvasKey, CanvasPaint, …, CanvasRasterBufferedImage (v BB ukázky a návody), řešící hlavní aplikační třídu a UI. Soustřeďte se na interface Raster a třídu RasterBufferedImage a použijte ji pro vaše řešení.
 
