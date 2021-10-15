@@ -24,9 +24,11 @@ public class CanvasMouse {
 
     private final JPanel panel;
     private final RasterBufferdImage raster;
+
+    private final ModeChanger modeChanger;
+
     private final LineRasterizer lineRasterizer;
     private final LineRasterizer dottedLineRasterizer;
-    private final ModeChanger modeChanger;
     private final PolygonRasterizer polygonRasterizer;
     private final RightAngleTriangleRasterizer rightAngleTriangleRasterizer;
 
@@ -65,19 +67,11 @@ public class CanvasMouse {
         lineRasterizer = new LineRasterizerTrivial(raster);
         dottedLineRasterizer = new DottedLineRasterizer(raster);
 
-        polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer, dottedLineRasterizer);
+        polygonRasterizer = new PolygonRasterizer(lineRasterizer, dottedLineRasterizer);
         modeChanger = new ModeChanger(panel);
-        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster, dottedLineRasterizer);
+        rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(dottedLineRasterizer);
 
-        /*panel.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                BufferedImage newImg = new BufferedImage(panel.getWidth(), panel.getHeight(),
-                        BufferedImage.TYPE_INT_RGB);
-                img = newImg;
-                draw();
-            }
-        });*/
+
         panel.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -89,39 +83,40 @@ public class CanvasMouse {
             }
         });
         panel.addMouseListener(new MouseAdapter() {
-
             @Override
             public void mouseReleased(MouseEvent e) {
                 clear();
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    //line
+                    if (modeChanger.getMode() == 1) {
+                        if (x1 == -1 && y1 == -1) {
+                            x1 = e.getX();
+                            y1 = e.getY();
+                        } else {
+                            lines.add(new Line(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
+                            x1 = -1;
+                            y1 = -1;
+                        }
+                    }
+                    //polygon
+                    else if (modeChanger.getMode() == 2) {
+                        if (polygon == null)
+                            polygon = new Polygon(Color.YELLOW);
+                        polygon.addPoint(new Point(e.getX(), e.getY()));
+                        polygonRasterizer.assistantLines(e, polygon);
+                    }
+                    //rightAngleTriangle
+                    else if (modeChanger.getMode() == 3) {
+                        if (x1 == -1 && y1 == -1) {
+                            x1 = e.getX();
+                            y1 = e.getY();
+                        } else {
+                            polygons.add(rightAngleTriangleRasterizer.createRightAngleTriangle(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
+                            x1 = -1;
+                            y1 = -1;
+                        }
+                    }
 
-                //line
-                if (modeChanger.getMode() == 1) {
-                    if (x1 == -1 && y1 == -1) {
-                        x1 = e.getX();
-                        y1 = e.getY();
-                    } else {
-                        lines.add(new Line(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
-                        x1 = -1;
-                        y1 = -1;
-                    }
-                }
-                //polygon
-                else if (modeChanger.getMode() == 2) {
-                    if (polygon == null)
-                        polygon = new Polygon(Color.YELLOW);
-                    polygon.addPoint(new Point(e.getX(), e.getY()));
-                    polygonRasterizer.assistantLines(e, polygon);
-                }
-                //rightAngleTriangle
-                else if (modeChanger.getMode() == 3) {
-                    if (x1 == -1 && y1 == -1) {
-                        x1 = e.getX();
-                        y1 = e.getY();
-                    } else {
-                        polygons.add(rightAngleTriangleRasterizer.createRightAngleTriangle(new Point(x1, y1), new Point(e.getX(), e.getY()), Color.YELLOW));
-                        x1 = -1;
-                        y1 = -1;
-                    }
                 }
                 draw();
             }
@@ -129,7 +124,6 @@ public class CanvasMouse {
         panel.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-
                 clear();
                 //line
                 if (modeChanger.getMode() == 1)
@@ -141,7 +135,7 @@ public class CanvasMouse {
                 //rightAngleTriangle
                 if (modeChanger.getMode() == 3)
                     if (x1 >= 0 && y1 >= 0)
-                        rightAngleTriangleRasterizer.assistanLines(e, new Point(x1, y1), Color.RED);
+                        rightAngleTriangleRasterizer.assistantLines(e, new Point(x1, y1), Color.RED);
                 draw();
             }
         });

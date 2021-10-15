@@ -22,20 +22,9 @@ public class ModeChanger {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_NUMPAD1:
-                        mode = 1;
-                        break;
-                    case KeyEvent.VK_NUMPAD2:
-                        mode = 2;
-                        break;
-                    case KeyEvent.VK_NUMPAD3:
-                        mode = 3;
-                        break;
-                    case KeyEvent.VK_NUMPAD4:
-                        mode = 4;
-                        break;
-                    case KeyEvent.VK_NUMPAD5:
-                        mode = 5;
+                    case KeyEvent.VK_NUMPAD1 -> mode = 1;
+                    case KeyEvent.VK_NUMPAD2 -> mode = 2;
+                    case KeyEvent.VK_NUMPAD3 -> mode = 3;
                 }
             }
         });

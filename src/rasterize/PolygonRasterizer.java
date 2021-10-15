@@ -1,7 +1,6 @@
 package rasterize;
 
 import model.Polygon;
-import rester.Raster;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -11,11 +10,9 @@ public class PolygonRasterizer{
 
     private final LineRasterizer lineRasterizer;
     private final LineRasterizer dottedLineRasterizer;
-    private final Raster raster;
 
-    public PolygonRasterizer(Raster raster, LineRasterizer lineRasterizer,LineRasterizer dottedLineRasterizer) {
+    public PolygonRasterizer(LineRasterizer lineRasterizer,LineRasterizer dottedLineRasterizer) {
         this.dottedLineRasterizer = dottedLineRasterizer;
-        this.raster=raster;
         this.lineRasterizer = lineRasterizer;
     }
 
@@ -47,7 +44,6 @@ public class PolygonRasterizer{
                     p.getPoints().get(p.getPoints().size() - 1).y,
                     p.getColor());
         });
-
     }
 
     public void assistantLines(MouseEvent e, Polygon polygon) {

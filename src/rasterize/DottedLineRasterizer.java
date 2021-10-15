@@ -16,7 +16,6 @@ public class DottedLineRasterizer extends LineRasterizer {
         k = ((float) (y2 - y1) / (x2 - x1));
         q = y1 - (k * x1);
 
-
         if (Math.abs(y2 - y1) < Math.abs(x2 - x1)) {
             if (x2 < x1) {
                 int tmp = x1;
@@ -79,9 +78,6 @@ public class DottedLineRasterizer extends LineRasterizer {
 
             int i = 18;
             if (x1 == x2) {
-                /*for (int y = y1; y <= y2; y++)
-                    raster.setPixel(x1, y, color);*/
-                //////////////////////////////////
                 if (rest == 0) {
                     for (int y = y1; y <= y2; y++) {
                         if (i % (intervalSize + 1) == 0) {
@@ -114,13 +110,7 @@ public class DottedLineRasterizer extends LineRasterizer {
                         i++;
                     }
                 }
-                //////////////////////
             } else {
-                /*for (int y = y1; y <= y2; y++) {
-                    float x = (y - q) / k;
-                    raster.setPixel((int) x, y, color);
-                }*/
-                ////////////////////////////
                 if (rest == 0) {
                     for (int y = y1; y <= y2; y++) {
                         if (i % (intervalSize + 1) == 0) {

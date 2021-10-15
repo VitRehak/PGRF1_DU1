@@ -1,11 +1,9 @@
 package rasterize;
 
-import model.Line;
 import rester.Raster;
 import rester.RasterBufferdImage;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 

@@ -1,19 +1,15 @@
 package rasterize;
 
 import model.Polygon;
-import rester.Raster;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.security.interfaces.RSAKey;
 
 public class RightAngleTriangleRasterizer{
 
     private final LineRasterizer lineRasterizer;
-    private final Raster raster;
 
-    public RightAngleTriangleRasterizer(Raster raster, LineRasterizer lineRasterizer) {
-        this.raster = raster;
+    public RightAngleTriangleRasterizer(LineRasterizer lineRasterizer) {
         this.lineRasterizer = lineRasterizer;
     }
 
@@ -38,7 +34,7 @@ public class RightAngleTriangleRasterizer{
         return polygon;
     }
 
-    public void assistanLines(MouseEvent e, Point source, Color color) {
+    public void assistantLines(MouseEvent e, Point source, Color color) {
         Point destination = new Point(e.getX(), e.getY());
         if (source.y < destination.y) {
             Point tmp = new Point(source.x, source.y);

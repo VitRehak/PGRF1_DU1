@@ -3,7 +3,6 @@ package rasterize;
 import rester.Raster;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public class LineRasterizerTrivial extends LineRasterizer {
 
