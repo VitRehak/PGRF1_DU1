@@ -1,7 +1,7 @@
 package rasterize;
 
-import rester.Raster;
-import rester.RasterBufferdImage;
+import raster.Raster;
+import raster.RasterBufferdImage;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -1,6 +1,6 @@
 package rasterize;
 
-import rester.Raster;
+import raster.Raster;
 
 import java.awt.*;
 
@@ -19,6 +19,7 @@ public class LineRasterizerTrivial extends LineRasterizer {
 
 
         if (Math.abs(y2 - y1) < Math.abs(x2 - x1)) {
+            //ridici osa X
             if (x2 < x1) {
                 int tmp = x1;
                 x1 = x2;
@@ -29,6 +30,7 @@ public class LineRasterizerTrivial extends LineRasterizer {
                 raster.setPixel(x, (int) y, color);
             }
         } else {
+            //ridici osa Y
             if (y2 < y1) {
                 int tmp = y1;
                 y1 = y2;

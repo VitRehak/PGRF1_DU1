@@ -1,4 +1,4 @@
-package rester;
+package raster;
 
 import java.awt.*;
 

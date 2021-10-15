@@ -2,7 +2,7 @@
 import model.Line;
 import model.Polygon;
 import rasterize.*;
-import rester.RasterBufferdImage;
+import raster.RasterBufferdImage;
 
 import java.awt.*;
 import java.awt.event.*;
