@@ -7,12 +7,13 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-public class PolygonRasterizer extends LineRasterizer {
+public class PolygonRasterizer{
 
     private final LineRasterizer lineRasterizer;
+    private final Raster raster;
 
     public PolygonRasterizer(Raster raster, LineRasterizer lineRasterizer) {
-        super(raster);
+        this.raster=raster;
         this.lineRasterizer = lineRasterizer;
     }
 

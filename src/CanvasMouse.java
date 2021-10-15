@@ -1,10 +1,7 @@
 
 import model.Line;
 import model.Polygon;
-import rasterize.LineRasterizer;
-import rasterize.LineRasterizerTrivial;
-import rasterize.PolygonRasterizer;
-import rasterize.RightAngleTriangleRasterizer;
+import rasterize.*;
 import rester.RasterBufferdImage;
 
 import java.awt.*;
@@ -28,6 +25,7 @@ public class CanvasMouse {
     private final JPanel panel;
     private final RasterBufferdImage raster;
     private final LineRasterizer lineRasterizer;
+    private final LineRasterizer dottedLineRasterizer;
     private final ModeChanger modeChanger;
     private final PolygonRasterizer polygonRasterizer;
     private final RightAngleTriangleRasterizer rightAngleTriangleRasterizer;
@@ -65,6 +63,8 @@ public class CanvasMouse {
 
         raster = new RasterBufferdImage(width, height);
         lineRasterizer = new LineRasterizerTrivial(raster);
+        dottedLineRasterizer = new DottedLineRasterizer(raster);
+
         polygonRasterizer = new PolygonRasterizer(raster, lineRasterizer);
         modeChanger = new ModeChanger(panel);
         rightAngleTriangleRasterizer = new RightAngleTriangleRasterizer(raster, lineRasterizer);
@@ -129,20 +129,19 @@ public class CanvasMouse {
         panel.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                clear();
 
+                clear();
                 //line
                 if (modeChanger.getMode() == 1)
                     if (x1 >= 0 && y1 >= 0)
-                        lineRasterizer.lineAssistant(new Point(x1, y1), e);
+                        ((LineRasterizerTrivial) lineRasterizer).lineAssistant(new Point(x1, y1), e);
                 //polygon
                 if (modeChanger.getMode() == 2)
                     polygonRasterizer.assistantLines(e, polygon);
                 //rightAngleTriangle
-                if (modeChanger.getMode() == 3) {
+                if (modeChanger.getMode() == 3)
                     if (x1 >= 0 && y1 >= 0)
                         rightAngleTriangleRasterizer.assistanLines(e, new Point(x1, y1), Color.RED);
-                }
                 draw();
             }
         });
@@ -184,7 +183,7 @@ public class CanvasMouse {
     }
 
     public void draw() {
-        lines.forEach(l -> lineRasterizer.rasterize(l.getSource().x, l.getSource().y, l.getDestination().x, l.getDestination().y, l.getColor()));
+        lines.forEach(l -> dottedLineRasterizer.rasterize(l.getSource().x, l.getSource().y, l.getDestination().x, l.getDestination().y, l.getColor()));
         if (polygons.size() > 0)
             polygonRasterizer.rasterize(polygons);
         if (polygon != null)

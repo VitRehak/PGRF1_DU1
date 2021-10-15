@@ -5,13 +5,15 @@ import rester.Raster;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.security.interfaces.RSAKey;
 
-public class RightAngleTriangleRasterizer extends LineRasterizer {
+public class RightAngleTriangleRasterizer{
 
     private final LineRasterizer lineRasterizer;
+    private final Raster raster;
 
     public RightAngleTriangleRasterizer(Raster raster, LineRasterizer lineRasterizer) {
-        super(raster);
+        this.raster = raster;
         this.lineRasterizer = lineRasterizer;
     }
 
